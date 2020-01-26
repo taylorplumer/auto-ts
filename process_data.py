@@ -43,4 +43,4 @@ joblib.dump(Arima_model, 'arima.pkl')
 prediction = pd.DataFrame(Arima_model.predict(n_periods=44), index=test.index)
 
 prediction.columns = ['predicted_passengers']
-prediction.to_csv('prediction_df.csv')
+prediction.to_csv('prediction_df.csv', index=False)

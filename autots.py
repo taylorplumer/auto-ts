@@ -31,7 +31,7 @@ app = dash.Dash(__name__)
 server = app.server
 
 
-train, test = df[:100], df[100:]
+train, test = df.iloc[:100].copy(), df[100:].copy()
 
 
 additive_decomposition = seasonal_decompose(df, model= 'additive')
@@ -50,13 +50,12 @@ revised_out_file = [x for x in revised_out_file if "Total" not in x]
 
 Arima_model = joblib.load('arima.pkl')
 
-prediction = pd.DataFrame(Arima_model.predict(n_periods=44), index=test.index)
-
+#prediction = pd.DataFrame(Arima_model.predict(n_periods=44), index=test.index)
+prediction = pd.read_csv('prediction_df.csv')
 prediction.columns = ['predicted_passengers']
 
-test['predicted_passengers'] = prediction.loc[:, ['predicted_passengers']]
+test['predicted_passengers'] = prediction['predicted_passengers'].values
 test['error'] = test['passengers'] - test['predicted_passengers']
-
 probplot = np.array(scipy.stats.probplot(test.error))
 
 
@@ -116,8 +115,8 @@ app.layout = html.Div([
                                    y = test.passengers,
                                    mode='lines',
                                    name = 'test'),
-                            go.Scatter(x=prediction.index,
-                                   y = prediction.predicted_passengers,
+                            go.Scatter(x=test.index,
+                                   y = test.predicted_passengers,
                                    mode='lines',
                                    name = 'predicted')
                             ],
