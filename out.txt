@@ -1,0 +1,16 @@
+Fit ARIMA: order=(0, 1, 0) seasonal_order=(0, 1, 0, 12); AIC=652.680, BIC=657.612, Fit time=0.071 seconds
+Fit ARIMA: order=(1, 1, 0) seasonal_order=(1, 1, 0, 12); AIC=645.940, BIC=655.803, Fit time=0.278 seconds
+Fit ARIMA: order=(0, 1, 1) seasonal_order=(0, 1, 1, 12); AIC=646.447, BIC=656.311, Fit time=0.306 seconds
+Fit ARIMA: order=(0, 1, 0) seasonal_order=(0, 1, 0, 12); AIC=650.796, BIC=653.262, Fit time=0.017 seconds
+Fit ARIMA: order=(1, 1, 0) seasonal_order=(0, 1, 0, 12); AIC=647.792, BIC=655.190, Fit time=0.077 seconds
+Fit ARIMA: order=(1, 1, 0) seasonal_order=(2, 1, 0, 12); AIC=647.914, BIC=660.244, Fit time=0.827 seconds
+Fit ARIMA: order=(1, 1, 0) seasonal_order=(1, 1, 1, 12); AIC=647.927, BIC=660.257, Fit time=0.502 seconds
+Fit ARIMA: order=(1, 1, 0) seasonal_order=(0, 1, 1, 12); AIC=646.338, BIC=656.201, Fit time=0.411 seconds
+Fit ARIMA: order=(1, 1, 0) seasonal_order=(2, 1, 1, 12); AIC=646.280, BIC=661.076, Fit time=3.963 seconds
+Near non-invertible roots for order (1, 1, 0)(2, 1, 1, 12); setting score to inf (at least one inverse root too close to the border of the unit circle: 0.998)
+Fit ARIMA: order=(0, 1, 0) seasonal_order=(1, 1, 0, 12); AIC=649.280, BIC=656.678, Fit time=0.180 seconds
+Fit ARIMA: order=(2, 1, 0) seasonal_order=(1, 1, 0, 12); AIC=647.833, BIC=660.163, Fit time=0.541 seconds
+Fit ARIMA: order=(1, 1, 1) seasonal_order=(1, 1, 0, 12); AIC=647.405, BIC=659.734, Fit time=0.546 seconds
+Fit ARIMA: order=(0, 1, 1) seasonal_order=(1, 1, 0, 12); AIC=646.058, BIC=655.921, Fit time=0.236 seconds
+Fit ARIMA: order=(2, 1, 1) seasonal_order=(1, 1, 0, 12); AIC=649.330, BIC=664.126, Fit time=0.774 seconds
+Total fit time: 8.750 seconds
