@@ -1,3 +1,4 @@
+from process_data import load_df
 import pmdarima as pm
 import pandas as pd
 import numpy as np
@@ -13,18 +14,6 @@ import plotly.express as px
 import joblib
 
 df = pd.read_csv('AirPassengers.csv')
-def load_df(df):
-    """
-    data transformation for time series analysis
-    """
-    month = pd.date_range('19490131', periods=144, freq='M')
-    df['datestamp'] = month
-    df = df.rename({'#Passengers': 'passengers'}, axis=1)
-    df.set_index('datestamp', inplace=True)
-    df = df.drop(columns=['Month'], axis=1)
-
-    return df
-
 df = load_df(df)
 
 app = dash.Dash(__name__)

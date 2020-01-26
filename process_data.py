@@ -12,6 +12,7 @@ import scipy
 import plotly.express as px
 import joblib
 
+
 df = pd.read_csv('AirPassengers.csv')
 
 def load_df(df):
@@ -29,7 +30,8 @@ def load_df(df):
 
 df = load_df(df)
 
-train, test = df[:100], df[100:]
+train, test = df.iloc[:100].copy(), df[100:].copy()
+
 
 Arima_model = pm.auto_arima(train, start_p=0, start_q=0, max_p=8, max_q=8,
                             start_P=0, start_Q=0, max_P=8, max_Q=8,
