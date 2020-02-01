@@ -1,4 +1,4 @@
-from process_data import load_df
+from load_df import load_df
 import pmdarima as pm
 import pandas as pd
 import numpy as np
@@ -13,7 +13,7 @@ from sklearn import metrics
 import scipy
 import joblib
 
-df = load_df()
+df = load_df('Data/Input/AirPassengers.csv')
 
 app = dash.Dash(__name__)
 server = app.server
@@ -201,6 +201,5 @@ def update_resid(decomposition_model):
     return figure
 
 
-#app.css.append_css({'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'}) Not working
 if __name__ == '__main__':
     app.run_server()

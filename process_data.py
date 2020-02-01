@@ -1,3 +1,4 @@
+from load_df import load_df
 import pmdarima as pm
 import pandas as pd
 import numpy as np
@@ -13,20 +14,7 @@ import scipy
 import joblib
 
 
-def load_df():
-    """
-    data transformation for time series analysis
-    """
-    df = pd.read_csv('Data/Input/AirPassengers.csv')
-    month = pd.date_range('19490131', periods=144, freq='M')
-    df['datestamp'] = month
-    df = df.rename({'#Passengers': 'passengers'}, axis=1)
-    df.set_index('datestamp', inplace=True)
-    df = df.drop(columns=['Month'], axis=1)
-
-    return df
-
-df = load_df()
+df = load_df('Data/Input/AirPassengers.csv')
 
 train, test = df.iloc[:100].copy(), df[100:].copy()
 
