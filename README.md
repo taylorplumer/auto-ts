@@ -1,5 +1,5 @@
 # auto-arima-app
-Build a Dask web app diagnostic tool for ARIMA time series analysis
+Build a Dash web app diagnostic tool for ARIMA time series analysis
 
 ### Summary
 The repository contains working code for preparing time series data, building an ARIMA model, and deploying to a Dash app locally. Instructions are below.
