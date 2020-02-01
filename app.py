@@ -8,13 +8,12 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.graph_objs as go
+import plotly.express as px
 from sklearn import metrics
 import scipy
-import plotly.express as px
 import joblib
 
-df = pd.read_csv('AirPassengers.csv')
-df = load_df(df)
+df = load_df()
 
 app = dash.Dash(__name__)
 server = app.server
@@ -28,7 +27,7 @@ multiplicative_decomposition = seasonal_decompose(df, model= 'multiplicative')
 
 adf_test = pm.arima.ADFTest(alpha=0.05)
 
-with open ("out.txt", "r") as myfile:
+with open ("Data/Output/out.txt", "r") as myfile:
     out_file=myfile.readlines()
 
 for i in range(len(out_file)):
@@ -37,10 +36,10 @@ for i in range(len(out_file)):
 revised_out_file = [x for x in out_file if "Near non-" not in x]
 revised_out_file = [x for x in revised_out_file if "Total" not in x]
 
-Arima_model = joblib.load('arima.pkl')
+Arima_model = joblib.load('Model/arima.pkl')
 
 #prediction = pd.DataFrame(Arima_model.predict(n_periods=44), index=test.index)
-prediction = pd.read_csv('prediction_df.csv')
+prediction = pd.read_csv('Data/Output/prediction_df.csv')
 prediction.columns = ['predicted_passengers']
 
 test['predicted_passengers'] = prediction['predicted_passengers'].values

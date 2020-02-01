@@ -7,19 +7,17 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.graph_objs as go
+import plotly.express as px
 from sklearn import metrics
 import scipy
-import plotly.express as px
 import joblib
 
 
-df = pd.read_csv('AirPassengers.csv')
-
-def load_df(df):
+def load_df():
     """
     data transformation for time series analysis
     """
-    df = pd.read_csv('AirPassengers.csv')
+    df = pd.read_csv('Data/Input/AirPassengers.csv')
     month = pd.date_range('19490131', periods=144, freq='M')
     df['datestamp'] = month
     df = df.rename({'#Passengers': 'passengers'}, axis=1)
@@ -28,7 +26,7 @@ def load_df(df):
 
     return df
 
-df = load_df(df)
+df = load_df()
 
 train, test = df.iloc[:100].copy(), df[100:].copy()
 
@@ -40,9 +38,9 @@ Arima_model = pm.auto_arima(train, start_p=0, start_q=0, max_p=8, max_q=8,
                             stepwise=True, random_state=20, n_fits=30)
 
 
-joblib.dump(Arima_model, 'arima.pkl')
+joblib.dump(Arima_model, 'Model/arima.pkl')
 
 prediction = pd.DataFrame(Arima_model.predict(n_periods=44), index=test.index)
 
 prediction.columns = ['predicted_passengers']
-prediction.to_csv('prediction_df.csv', index=False)
+prediction.to_csv('Data/Output/prediction_df.csv', index=False)
