@@ -15,10 +15,17 @@ The data is the often used AirPassengers.csv dataset; it contains monthly passen
         `python process_data.py`
 
 2. Run the following command to run the web app.
-    `python autots.py`
+    `python app.py`
 
 3. Go to http://127.0.0.1:8050/
 
 
 ###  Installation
-This project utilizes default packages within the Anaconda distribution of Python. Dash and pmdarima were additionally installed. As noted above, a requirements.txt file is included for dependencies.
+This project utilizes default packages within the Anaconda distribution of Python. Dash and pmdarima were additionally installed. 
+
+After creating a virtual environment (recommended), you can install the dependencies with the following command: 
+
+```
+pip install -r requirements.txt
+```
+
