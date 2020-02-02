@@ -46,101 +46,98 @@ test['predicted_passengers'] = prediction['predicted_passengers'].values
 test['error'] = test['passengers'] - test['predicted_passengers']
 probplot = np.array(scipy.stats.probplot(test.error))
 
+tab_decomposition = dcc.Tab(label='Time Series Decomposition', children = [
+                        html.H2(children='Decomposition Plots'),
+                        dcc.RadioItems(
+                                        id = 'decomposition_model-picker',
+                                        options = [
+                                        {'label': 'Additive', 'value': 'Additive'},
+                                        {'label': 'Multiplicative', 'value': 'Multiplicative'}
+                                        ],
+                                        value='Additive',
+                                        labelStyle={'display': 'inline-block'}
+                                        ),
+                        dcc.Graph(id = 'feature-graphic',
+                                    figure = go.Figure(
+                                        data=[go.Scatter(x= df.index,
+                                                        y = df['passengers'],
+                                                        mode='lines')],
+                                        #layout_title_text="Air Passengers Time Series",
+                                        layout = {'title': "Air Passengers Time Series"},
+                                    )),
+                        dcc.Graph(id = 'trend-graphic'),
+                        dcc.Graph(id = 'seasonal-graphic'),
+                        dcc.Graph(id= 'resid-graphic'),
+                        html.H2(children='Stationarity'),
+                        html.P(children= 'ADF Test Results: {}'.format(adf_test.should_diff(df)))
+                    ])
+
+tab_selection = dcc.Tab(label='Model Selection', children = [
+                        html.H2(children='Auto-Arima Grid Search'),
+                        dcc.Graph(id = 'arima_table-graphic',
+                                    figure = go.Figure(
+                                        data=[go.Table(header=dict(values=['Results']),
+                                                        cells=dict(values=[revised_out_file]))
+                         ])),
+                        html.H2(children='Best Fit Model'),
+                        dcc.Graph(id='best_model-graphic',
+                                    figure = go.Figure(
+                                        data=[go.Table(header=dict(values=['Order', 'Seasonal_Order', 'AIC', 'BIC']),
+                                                        cells=dict(values=[str(Arima_model.order), str(Arima_model.seasonal_order), round(Arima_model.aic(), 3), round(Arima_model.bic(),3)]))
+                         ])),
+                    ])
+
+tab_evaluation = dcc.Tab(label='Model Evaluation', children = [
+                    dcc.Graph(id='train_test_predict-graphic',
+                                figure = go.Figure(
+                                    data=[go.Scatter(x=train.index,
+                                               y = train.passengers,
+                                               mode='lines',
+                                               name = 'train'),
+                                        go.Scatter(x=test.index,
+                                               y = test.passengers,
+                                               mode='lines',
+                                               name = 'test'),
+                                        go.Scatter(x=test.index,
+                                               y = test.predicted_passengers,
+                                               mode='lines',
+                                               name = 'predicted')
+                                        ],
+                                    layout_title_text = 'Train Test Predict Plot'
+                    )),
+                    html.Div([
+                        dcc.Graph(id = 'error_measures-graphic',
+                                    figure = go.Figure(data=[go.Table(header=dict(values=['mean_absolute_error', 'mean_squared_error', 'median_absolute_error']),
+                                                                cells=dict(values=[round(metrics.mean_absolute_error(test.passengers, test.predicted_passengers), 2),
+                                                                    round(metrics.mean_squared_error(test.passengers, test.predicted_passengers), 2),
+                                                                    round(metrics.median_absolute_error(test.passengers, test.predicted_passengers), 2)]))],
+                                                        )
+                                )
+                        ]), # html.div
+                     html.Div([
+                        html.Div([
+                        dcc.Graph(id='prediction_error-graphic',
+                                    figure = go.Figure(data = [go.Scatter(x= test.index, y = test['error'], mode='lines')],
+                                                        layout = {'title': 'Error Distribution'})
+                                    )], className="six columns", style = {'width': '48%', 'display': 'inline-block'}),
+                        html.Div([
+                                    dcc.Graph(id='probablity_plot-graphic',
+                                    figure = px.scatter(x = probplot[0][0],
+                                                        y = probplot[0][1],
+                                                        trendline="ols",
+                                                        title= 'Probability Plot',
+                                                        labels ={'x': 'Theoretical Quantiles',
+                                                                'y':'Sample Quantiles'}
+                                    ))], className="six columns", style = {'width': '48%', 'display': 'inline-block'}) # dcc.Graph and html div
+                            ], className="row") # html.div
+                    ])
+
 
 app.layout = html.Div([
-            html.Img(src=app.get_asset_url('auto-ts-logo.png'), style={'height': '10%', 'width': '25%'}),
-            dcc.Tabs([
-                dcc.Tab(label='Time Series Decomposition', children = [
-                    html.H2(children='Decomposition Plots'),
-                    dcc.RadioItems(
-                    id = 'decomposition_model-picker',
-                    options = [
-                    {'label': 'Additive', 'value': 'Additive'},
-                    {'label': 'Multiplicative', 'value': 'Multiplicative'}
-                    ],
-                    value='Additive',
-                    labelStyle={'display': 'inline-block'}
-                    ),
-                    dcc.Graph(id = 'feature-graphic',
-                    figure = go.Figure(
-                        data=[go.Scatter(x= df.index,
-                                        y = df['passengers'],
-                                        mode='lines')],
-                        #layout_title_text="Air Passengers Time Series",
-                        layout = {'title': "Air Passengers Time Series",
-                                    #'margin': {'l': 50, 'r': 50, 'b':50, 't':100},
-                                    #'height': 225
-                        },
-                    )),
-                    dcc.Graph(id = 'trend-graphic'),
-                    dcc.Graph(id = 'seasonal-graphic'),
-                    dcc.Graph(id= 'resid-graphic'),
-                    html.H2(children='Stationarity'),
-                    html.P(children= 'ADF Test Results: {}'.format(adf_test.should_diff(df))),
-                ]),
-                dcc.Tab(label='Model Selection', children = [
-                    html.H2(children='Auto-Arima Grid Search'),
-                    dcc.Graph(id = 'arima_table-graphic',
-                    figure = go.Figure(
-                        data=[go.Table(header=dict(values=['Results']),
-                                        cells=dict(values=[revised_out_file]))
-                     ])),
-                    html.H2(children='Best Fit Model'),
-                    dcc.Graph(id='best_model-graphic',
-                    figure = go.Figure(
-                        data=[go.Table(header=dict(values=['Order', 'Seasonal_Order', 'AIC', 'BIC']),
-                                        cells=dict(values=[str(Arima_model.order), str(Arima_model.seasonal_order), round(Arima_model.aic(), 3), round(Arima_model.bic(),3)]))
-                     ])),
-                ]),
-                dcc.Tab(label='Model Evaluation', children = [
-                    dcc.Graph(id='train_test_predict-graphic',
-                    figure = go.Figure(
-                        data=[go.Scatter(x=train.index,
-                                   y = train.passengers,
-                                   mode='lines',
-                                   name = 'train'),
-                            go.Scatter(x=test.index,
-                                   y = test.passengers,
-                                   mode='lines',
-                                   name = 'test'),
-                            go.Scatter(x=test.index,
-                                   y = test.predicted_passengers,
-                                   mode='lines',
-                                   name = 'predicted')
-                            ],
-                        layout_title_text = 'Train Test Predict Plot'
-                    )),
-                    html.Div([
-                    dcc.Graph(id = 'error_measures-graphic',
-                    figure = go.Figure(data=[go.Table(header=dict(values=['mean_absolute_error', 'mean_squared_error', 'median_absolute_error']),
-                                cells=dict(values=[round(metrics.mean_absolute_error(test.passengers, test.predicted_passengers), 2),
-                                    round(metrics.mean_squared_error(test.passengers, test.predicted_passengers), 2),
-                                    round(metrics.median_absolute_error(test.passengers, test.predicted_passengers), 2)]))],
-                     #layout = {'margin': {'l': 0, 'r': 0, 'b':0, 't':0}}
-                     ))]
-                     #, style = {'width': '50%', 'height': '25'}
-                     ), # html.div
-                     html.Div([
-                     html.Div([
-                    dcc.Graph(id='prediction_error-graphic',
-                    figure = go.Figure(data = [go.Scatter(x= test.index, y = test['error'], mode='lines')],
-                                        layout = {'title': 'Error Distribution'})
-                    )], className="six columns", style = {'width': '48%', 'display': 'inline-block'}),
-                    html.Div([
-                    dcc.Graph(id='probablity_plot-graphic',
-                    figure = px.scatter(x = probplot[0][0],
-                                        y = probplot[0][1],
-                                        trendline="ols",
-                                        title= 'Probability Plot',
-                                        labels ={'x': 'Theoretical Quantiles',
-                                                'y':'Sample Quantiles'}
-                    ))], className="six columns", style = {'width': '48%', 'display': 'inline-block'}) # dcc.Graph and html div
-                    ], className="row") # html.div
-                    ]) # dcc.tab
+                        html.Img(src=app.get_asset_url('auto-ts-logo.png'), style={'height': '10%', 'width': '25%'}),
+                        dcc.Tabs([tab_decomposition, tab_selection, tab_evaluation])
+                        ], style = {'height': '50%', 'width': '70%'}) # html.div
 
-
-                    ]) # dcc.tabs
-], style = {'height': '50%', 'width': '70%'}) # html.div
 
 @app.callback(Output('trend-graphic', 'figure'),
                 [Input('decomposition_model-picker', 'value')])
@@ -151,7 +148,6 @@ def update_trend(decomposition_model):
     elif decomposition_model == 'Multiplicative':
         decomposition = multiplicative_decomposition
 
-
     figure = go.Figure(
         data=[go.Scatter(x= df.index,
                         y = decomposition.trend['passengers'].values.tolist(),
@@ -160,6 +156,7 @@ def update_trend(decomposition_model):
     )
 
     return figure
+
 
 @app.callback(Output('seasonal-graphic', 'figure'),
                 [Input('decomposition_model-picker', 'value')])
