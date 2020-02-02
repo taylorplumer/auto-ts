@@ -109,14 +109,12 @@ tab_evaluation = dcc.Tab(label='Model Evaluation', children = [
                                                 'yaxis': {'title': 'Passengers'}}
                     )),
                     html.Div([
-                        dcc.Graph(id = 'error_measures-graphic',
-                                    figure = go.Figure(data=[go.Table(header=dict(values=['mean_absolute_error', 'mean_squared_error', 'median_absolute_error']),
-                                                                cells=dict(values=[round(metrics.mean_absolute_error(test.passengers, test.predicted_passengers), 2),
-                                                                    round(metrics.mean_squared_error(test.passengers, test.predicted_passengers), 2),
-                                                                    round(metrics.median_absolute_error(test.passengers, test.predicted_passengers), 2)]))],
-                                                        )
-                                )
-                        ]), # html.div
+                        html.P(children= 'Mean Absolute Error {}'.format(round(metrics.mean_absolute_error(test.passengers, test.predicted_passengers), 2))),
+                        html.P(children= 'Mean Squared Error: {}'.format(round(metrics.mean_squared_error(test.passengers, test.predicted_passengers), 2))),
+                        html.P(children= 'Median Absolute Error: {}'.format(round(metrics.median_absolute_error(test.passengers, test.predicted_passengers), 2))),
+                        ],
+                        #style= {'font-weight': 'bold'}
+                        ), # html.div
                      html.Div([
                         html.Div([
                         dcc.Graph(id='prediction_error-graphic',
