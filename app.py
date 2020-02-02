@@ -62,8 +62,9 @@ tab_decomposition = dcc.Tab(label='Time Series Decomposition', children = [
                                         data=[go.Scatter(x= df.index,
                                                         y = df['passengers'],
                                                         mode='lines')],
-                                        #layout_title_text="Air Passengers Time Series",
-                                        layout = {'title': "Air Passengers Time Series"},
+                                        layout = {'title': "Air Passengers Time Series",
+                                                    'xaxis': {'title': 'Date'},
+                                                    'yaxis': {'title': 'Passengers'}}
                                     )),
                         dcc.Graph(id = 'trend-graphic'),
                         dcc.Graph(id = 'seasonal-graphic'),
@@ -103,7 +104,9 @@ tab_evaluation = dcc.Tab(label='Model Evaluation', children = [
                                                mode='lines',
                                                name = 'predicted')
                                         ],
-                                    layout_title_text = 'Train Test Predict Plot'
+                                    layout = {'title': 'Train vs Test vs Predict',
+                                                'xaxis': {'title': 'Date'},
+                                                'yaxis': {'title': 'Passengers'}}
                     )),
                     html.Div([
                         dcc.Graph(id = 'error_measures-graphic',
@@ -118,7 +121,9 @@ tab_evaluation = dcc.Tab(label='Model Evaluation', children = [
                         html.Div([
                         dcc.Graph(id='prediction_error-graphic',
                                     figure = go.Figure(data = [go.Scatter(x= test.index, y = test['error'], mode='lines')],
-                                                        layout = {'title': 'Error Distribution'})
+                                                        layout = {'title': 'Error Over Time',
+                                                                    'xaxis': {'title': 'Date',},
+                                                                    'yaxis': {'title': 'Error'}})
                                     )], className="six columns", style = {'width': '48%', 'display': 'inline-block'}),
                         html.Div([
                                     dcc.Graph(id='probablity_plot-graphic',
