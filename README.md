@@ -5,7 +5,7 @@ Build a Dash web app diagnostic tool for ARIMA time series analysis
 ### Summary
 The repository contains working code for preparing time series data, building an ARIMA model, and deploying to a Dash app locally. Instructions are below.
 
-A demo deployed to Heroku is available for viewing at the following address: <http://autots-app2.herokuapp.com>
+A demo deployed to Heroku is available for viewing at the following address (it may take a few seconds to load for the Heroku dyno to spin up): <http://autots-app2.herokuapp.com>
 
 The data is the often used AirPassengers.csv dataset; it contains monthly passenger totals from 1949 to 1960.
 
