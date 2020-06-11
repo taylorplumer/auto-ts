@@ -1,7 +1,6 @@
 # auto-ts
 Build a Dash web app diagnostic tool for ARIMA time series analysis
 
-![](https://github.com/taylorplumer/auto-ts/blob/master/assets/auto-ts-logo.png | width=100 | height=100)
 ### Summary
 The repository contains working code for preparing time series data, building an ARIMA model, and deploying to a Dash app locally. Instructions are below.
 
