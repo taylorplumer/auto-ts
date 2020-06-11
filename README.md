@@ -1,4 +1,4 @@
-# auto-arima-app
+# Auto-ts
 Build a Dash web app diagnostic tool for ARIMA time series analysis
 
 ### Summary
