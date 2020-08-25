@@ -12,7 +12,7 @@ The data is the often used AirPassengers.csv dataset; it contains monthly passen
 ### Instructions:
 1. Run the following commands in the project's root directory to set up the data and model.
 
-    - To run clean data, build model, make predictions, and evaluate model
+    - To run clean data, build model, make predictions, and evaluate model.
         `python process_data.py`
 
 2. Run the following command to run the web app.
@@ -22,11 +22,10 @@ The data is the often used AirPassengers.csv dataset; it contains monthly passen
 
 
 ###  Installation
-This project utilizes default packages within the Anaconda distribution of Python. Dash and pmdarima were additionally installed. 
+This project utilizes default packages within the Anaconda distribution of Python. Dash and pmdarima were additionally installed.
 
-After creating a virtual environment (recommended), you can install the dependencies with the following command: 
+After creating a virtual environment (recommended), you can install the dependencies with the following command:
 
 ```
 pip install -r requirements.txt
 ```
-
