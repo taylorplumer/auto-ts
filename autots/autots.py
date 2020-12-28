@@ -22,6 +22,7 @@ class Dashboard():
         self.image = kwargs.get('image')
         self.title = kwargs.get('title')
         self.tabs = ["Time Series Decomposition", "Model Selection", "Model Evaluation"]
+        self.test_size = int(self.df.shape[0] * kwargs.get('test_size'))
 
     def preprocess(self):
         """
@@ -29,7 +30,9 @@ class Dashboard():
         grid search of ARIMA parameters, and predictions
 
         """
-        self.train, self.test = self.df.iloc[:100].copy(), self.df[100:].copy()
+        self.train_size = 1- self.test_size
+        self.split_int = self.df.shape[0] - self.test_size
+        self.train, self.test = self.df.iloc[ : self.split_int].copy(), self.df[ self.split_int : ].copy()
         self.additive_decomposition = seasonal_decompose(self.df, model='additive')
         self.multiplicative_decomposition = seasonal_decompose(self.df, model='multiplicative')
         self.adf_test = pm.arima.ADFTest(alpha=0.05)
@@ -38,7 +41,7 @@ class Dashboard():
         self.grid_search_df = pd.DataFrame([model.to_dict() for model in self.Arima_models])[
             ['order', 'seasonal_order', 'aic', 'aicc', 'bic']]
         self.best_result_df = best_result_df(self.grid_search_df)
-        self.test['preds'] = make_predictions(self.Arima_models, self.best_result_df.index[0], 44)
+        self.test['preds'] = make_predictions(self.Arima_models, self.best_result_df.index[0], n_periods=self.test_size)
         self.test['error'] = calc_errors(self.test)
 
     def main(self):
